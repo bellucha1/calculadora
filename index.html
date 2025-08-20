@@ -3,95 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Rosa de Coração</title>
+    <title>Calculadora de Coração</title>
     <style>
-        /* Estilos CSS para o layout de coração */
+        /* Estilos CSS */
         body {
             font-family: 'Arial', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #fce4ec; /* Rosa clarinho para o fundo */
+            background-color: #fce4ec;
             margin: 0;
+            overflow: hidden; /* Para garantir que o coração não saia da tela */
         }
 
         .calculator-container {
             position: relative;
-            width: 400px;
-            height: 380px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            width: 500px;
+            height: 480px;
         }
 
         .calculator {
             position: absolute;
-            top: 60px; /* Ajusta a posição para o coração */
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
-            width: 300px; /* Largura da grade interna */
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-            background-color: transparent; /* Fundo transparente */
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            background-color: transparent;
         }
-
-        .calculator-heart {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%) rotate(-45deg);
-            width: 250px;
-            height: 250px;
-            background-color: #f8bbd0; /* Rosa mais escuro para o coração */
-            border-radius: 20px;
-            z-index: -1;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .calculator-heart::before,
-        .calculator-heart::after {
+        
+        /* Coração de Fundo */
+        .calculator::before,
+        .calculator::after {
             content: '';
             position: absolute;
-            width: 250px;
-            height: 250px;
             background-color: #f8bbd0;
+            z-index: -1;
+        }
+
+        .calculator::before {
+            top: 25px;
+            left: 100px;
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
         }
 
-        .calculator-heart::before {
-            top: -125px;
-            left: 0;
+        .calculator::after {
+            top: 25px;
+            right: 100px;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
         }
 
-        .calculator-heart::after {
-            top: 0;
-            left: 125px;
+        /* O triângulo na parte inferior */
+        .calculator .base-heart {
+            position: absolute;
+            top: 175px;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+            width: 250px;
+            height: 250px;
+            background-color: #f8bbd0;
+            z-index: -2;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
 
+        /* Estilo do Display */
         .display {
-            grid-column: span 4;
+            position: absolute;
+            top: 150px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 250px;
+            height: 60px;
             background-color: #fff;
             color: #d81b60;
             font-size: 2.5em;
             text-align: right;
             padding: 15px;
             border-radius: 10px;
-            margin-bottom: 10px;
             box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             white-space: nowrap;
         }
 
+        /* Estilo dos Botões */
         .btn {
+            position: absolute;
+            width: 60px;
+            height: 60px;
             background-color: #ff80ab;
             color: #fff;
             border: none;
-            padding: 20px;
             font-size: 1.5em;
             border-radius: 10px;
             cursor: pointer;
@@ -110,50 +116,48 @@
             background-color: #c2185b;
         }
 
-        .memory {
-            background-color: #b39ddb;
-        }
-
-        .memory:hover {
-            background-color: #9575cd;
-        }
-
         .equals {
-            background-color: #f06292;
-            grid-column: span 2;
+            width: 130px; /* Botão de igual mais largo */
         }
+        
+        /* Posição manual de cada botão para formar o coração */
+        .btn:nth-child(2) { top: 180px; left: 10px; } /* C */
+        .btn:nth-child(3) { top: 180px; left: 80px; } /* sqrt */
+        .btn:nth-child(4) { top: 180px; left: 150px; } /* ^ */
+        .btn:nth-child(5) { top: 180px; left: 220px; } /* / */
 
-        .equals:hover {
-            background-color: #e91e63;
-        }
+        .btn:nth-child(6) { top: 250px; left: 10px; } /* 7 */
+        .btn:nth-child(7) { top: 250px; left: 80px; } /* 8 */
+        .btn:nth-child(8) { top: 250px; left: 150px; } /* 9 */
+        .btn:nth-child(9) { top: 250px; left: 220px; } /* * */
 
-        .clear {
-            background-color: #ffcd2c;
-            color: #fff;
-        }
+        .btn:nth-child(10) { top: 320px; left: 10px; } /* 4 */
+        .btn:nth-child(11) { top: 320px; left: 80px; } /* 5 */
+        .btn:nth-child(12) { top: 320px; left: 150px; } /* 6 */
+        .btn:nth-child(13) { top: 320px; left: 220px; } /* - */
 
-        .clear:hover {
-            background-color: #fbc02d;
-        }
+        .btn:nth-child(14) { top: 390px; left: 10px; } /* 1 */
+        .btn:nth-child(15) { top: 390px; left: 80px; } /* 2 */
+        .btn:nth-child(16) { top: 390px; left: 150px; } /* 3 */
+        .btn:nth-child(17) { top: 390px; left: 220px; } /* + */
+
+        .btn:nth-child(18) { top: 460px; left: 10px; } /* 0 */
+        .btn:nth-child(19) { top: 460px; left: 80px; } /* . */
+        .btn:nth-child(20) { top: 460px; left: 150px; } /* = */
     </style>
 </head>
 <body>
 
     <div class="calculator-container">
-        <div class="calculator-heart"></div>
         <div class="calculator">
+            <div class="base-heart"></div>
             <div class="display">0</div>
             
-            <button class="btn memory" data-op="MC">MC</button>
-            <button class="btn memory" data-op="MR">MR</button>
-            <button class="btn memory" data-op="M+">M+</button>
-            <button class="btn memory" data-op="M-">M-</button>
-            
-            <button class="btn clear">C</button>
-            <button class="btn operator" data-op="1/x">1/x</button>
+            <button class="btn clear" data-op="C">C</button>
+            <button class="btn operator" data-op="sqrt">sqrt</button>
             <button class="btn operator" data-op="^">^</button>
             <button class="btn operator" data-op="/">/</button>
-            
+
             <button class="btn">7</button>
             <button class="btn">8</button>
             <button class="btn">9</button>
@@ -169,7 +173,6 @@
             <button class="btn">3</button>
             <button class="btn operator" data-op="+">+</button>
             
-            <button class="btn operator" data-op="sqrt">sqrt</button>
             <button class="btn">0</button>
             <button class="btn">.</button>
             <button class="btn equals" data-op="=">=</button>
@@ -184,7 +187,6 @@
         let operator = '';
         let previousInput = '';
         let waitingForSecondOperand = false;
-        let memory = 0;
 
         buttons.forEach(button => {
             button.addEventListener('click', (e) => {
@@ -209,30 +211,8 @@
                                 currentInput = String(result);
                             }
                             return;
-                        case '1/x':
-                            if (currentInput !== '' && parseFloat(currentInput) !== 0) {
-                                let num = 1 / parseFloat(currentInput);
-                                display.textContent = num;
-                                currentInput = String(num);
-                            }
-                            return;
-                        case 'MC':
-                            memory = 0;
-                            return;
-                        case 'MR':
-                            currentInput = String(memory);
-                            display.textContent = currentInput;
-                            return;
-                        case 'M+':
-                            if (currentInput !== '') {
-                                memory += parseFloat(currentInput);
-                            }
-                            return;
-                        case 'M-':
-                            if (currentInput !== '') {
-                                memory -= parseFloat(currentInput);
-                            }
-                            return;
+                        case '^':
+                            break; // Lógica de operador binário tratada abaixo
                         case '=':
                             if (previousInput === '' || currentInput === '') {
                                 return;
@@ -246,13 +226,16 @@
                         operator = op;
                         return;
                     }
+
                     if (waitingForSecondOperand) {
                         operator = op;
                         return;
                     }
+
                     if (previousInput !== '') {
                         calculate();
                     }
+
                     operator = op;
                     previousInput = currentInput;
                     currentInput = '';
