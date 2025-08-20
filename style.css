@@ -1,130 +1,194 @@
-/* Estilos CSS para o layout de coração */
+/* Estilos CSS para o layout de Vaca */
 body {
     font-family: 'Arial', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #fce4ec; /* Rosa clarinho para o fundo */
+    background-color: #d1e7c5; /* Cor de grama clarinha */
     margin: 0;
+    overflow: hidden;
 }
 
-.calculator-container {
+.cow-calculator {
     position: relative;
-    width: 400px;
-    height: 380px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    width: 450px;
+    height: 400px;
 }
 
-.calculator {
+/* Base do rosto da vaca */
+.cow-face {
     position: absolute;
-    top: 60px; /* Ajusta a posição para o coração */
+    top: 50px;
     left: 50%;
     transform: translateX(-50%);
-    width: 300px; /* Largura da grade interna */
-    padding: 20px;
-    border-radius: 20px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-    background-color: transparent; /* Fundo transparente */
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
+    width: 350px;
+    height: 350px;
+    background-color: #f0f0f0; /* Cor branca para a face */
+    border-radius: 50%;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
-.calculator-heart {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%) rotate(-45deg);
-    width: 250px;
-    height: 250px;
-    background-color: #f8bbd0; /* Rosa mais escuro para o coração */
-    border-radius: 20px;
-    z-index: -1;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-}
-
-.calculator-heart::before,
-.calculator-heart::after {
+/* Manchas da vaca */
+.cow-face::before,
+.cow-face::after {
     content: '';
     position: absolute;
-    width: 250px;
-    height: 250px;
-    background-color: #f8bbd0;
+    background-color: #333; /* Cor preta para as manchas */
     border-radius: 50%;
 }
 
-.calculator-heart::before {
-    top: -125px;
-    left: 0;
+.cow-face::before {
+    width: 120px;
+    height: 100px;
+    top: 50px;
+    left: 40px;
+    transform: rotate(-20deg);
 }
 
-.calculator-heart::after {
-    top: 0;
-    left: 125px;
+.cow-face::after {
+    width: 80px;
+    height: 120px;
+    top: 80px;
+    right: 50px;
+    transform: rotate(30deg);
 }
+
+/* Orelhas e Chifres */
+.cow-ear, .cow-horn {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    background-color: #f0f0f0;
+    border-radius: 50% 50% 0 0;
+    transform-origin: bottom center;
+    z-index: -1;
+}
+
+.cow-ear.left {
+    transform: rotate(-40deg);
+    left: 50px;
+    top: 40px;
+    width: 70px;
+    height: 70px;
+    border-radius: 60px 0 60px 0;
+    background-color: #333;
+}
+
+.cow-ear.right {
+    transform: rotate(40deg);
+    right: 50px;
+    top: 40px;
+    width: 70px;
+    height: 70px;
+    border-radius: 0 60px 0 60px;
+    background-color: #333;
+}
+
+/* Nariz e Boca */
+.cow-snout {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150px;
+    height: 70px;
+    background-color: #ff80ab;
+    border-radius: 40px;
+    border: 2px solid #333;
+}
+
+.cow-snout::before,
+.cow-snout::after {
+    content: '';
+    position: absolute;
+    top: 15px;
+    width: 25px;
+    height: 25px;
+    background-color: #000;
+    border-radius: 50%;
+}
+
+.cow-snout::before { left: 25px; }
+.cow-snout::after { right: 25px; }
 
 .display {
-    grid-column: span 4;
+    position: absolute;
+    top: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 250px;
+    height: 60px;
     background-color: #fff;
     color: #d81b60;
     font-size: 2.5em;
     text-align: right;
     padding: 15px;
     border-radius: 10px;
-    margin-bottom: 10px;
     box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     white-space: nowrap;
 }
 
+/* Estilo e Posição dos Botões */
 .btn {
-    background-color: #ff80ab;
+    position: absolute;
+    width: 65px;
+    height: 65px;
+    background-color: #333;
     color: #fff;
     border: none;
-    padding: 20px;
     font-size: 1.5em;
-    border-radius: 10px;
+    border-radius: 50%;
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
 
 .btn:hover {
-    background-color: #ff4081;
+    background-color: #000;
 }
 
+/* Botões de Operador com cor diferente */
 .operator {
     background-color: #d81b60;
+    color: #fff;
 }
 
 .operator:hover {
     background-color: #c2185b;
 }
 
-.memory {
-    background-color: #b39ddb;
-}
-
-.memory:hover {
-    background-color: #9575cd;
-}
-
-.equals {
-    background-color: #f06292;
-    grid-column: span 2;
-}
-
-.equals:hover {
-    background-color: #e91e63;
-}
-
 .clear {
     background-color: #ffcd2c;
-    color: #fff;
 }
 
 .clear:hover {
     background-color: #fbc02d;
 }
+
+/* Posição manual de cada botão */
+.btn:nth-child(2) { top: 220px; left: 60px; } /* C */
+.btn:nth-child(3) { top: 220px; left: 140px; } /* / */
+.btn:nth-child(4) { top: 220px; left: 220px; } /* * */
+.btn:nth-child(5) { top: 220px; left: 300px; } /* - */
+
+.btn:nth-child(6) { top: 290px; left: 60px; } /* 7 */
+.btn:nth-child(7) { top: 290px; left: 140px; } /* 8 */
+.btn:nth-child(8) { top: 290px; left: 220px; } /* 9 */
+.btn:nth-child(9) { top: 290px; left: 300px; } /* + */
+
+.btn:nth-child(10) { top: 360px; left: 60px; } /* 4 */
+.btn:nth-child(11) { top: 360px; left: 140px; } /* 5 */
+.btn:nth-child(12) { top: 360px; left: 220px; } /* 6 */
+.btn:nth-child(13) { top: 360px; left: 300px; } /* sqrt */
+
+.btn:nth-child(14) { top: 430px; left: 60px; } /* 1 */
+.btn:nth-child(15) { top: 430px; left: 140px; } /* 2 */
+.btn:nth-child(16) { top: 430px; left: 220px; } /* 3 */
+.btn:nth-child(17) { top: 430px; left: 300px; } /* ^ */
+
+.btn:nth-child(18) { top: 500px; left: 60px; } /* 0 */
+.btn:nth-child(19) { top: 500px; left: 140px; } /* . */
+.btn:nth-child(20) { top: 500px; left: 220px; } /* = */
