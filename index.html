@@ -1,1 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Rosa</title>
+    <style>
+        /* Estilos CSS para a calculadora */
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #fce4ec; /* Um rosa bem clarinho para o fundo */
+            margin: 0;
+        }
 
+        .calculator {
+            background-color: #f8bbd0; /* Rosa mais escuro para a calculadora */
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            width: 300px;
+        }
+
+        .display {
+            grid-column: span 4;
+            background-color: #fff;
+            color: #d81b60; /* Rosa forte para o texto */
+            font-size: 2.5em;
+            text-align: right;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .btn {
+            background-color: #ff80ab; /* Rosa vibrante para os botões */
+            color: #fff;
+            border: none;
+            padding: 20px;
+            font-size: 1.5em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn:hover {
+            background-color: #ff4081; /* Um rosa ainda mais escuro no hover */
+        }
+
+        .operator {
+            background-color: #d81b60; /* Um rosa bem escuro para operadores */
+        }
+
+        .operator:hover {
+            background-color: #c2185b;
+        }
+
+        .equals {
+            background-color: #f06292; /* Rosa de igual */
+            grid-column: span 2;
+        }
+
+        .equals:hover {
+            background-color: #e91e63;
+        }
+
+        .clear {
+            background-color: #ffcd2c; /* Amarelo para o botão C */
+            color: #fff;
+        }
+
+        .clear:hover {
+            background-color: #fbc02d;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculator">
+        <div class="display">0</div>
+        <button class="btn clear">C</button>
+        <button class="btn operator">/</button>
+        <button class="btn operator">*</button>
+        <button class="btn operator">-</button>
+        <button class="btn">7</button>
+        <button class="btn">8</button>
+        <button class="btn">9</button>
+        <button class="btn operator">+</button>
+        <button class="btn">4</button>
+        <button class="btn">5</button>
+        <button class="btn">6</button>
+        <button class="btn">1</button>
+        <button class="btn">2</button>
+        <button class="btn">3</button>
+        <button class="btn equals">=</button>
+        <button class="btn">0</button>
+        <button class="btn">.</button>
+    </div>
+
+    <script>
+        // Código JavaScript para a funcionalidade
+        const display = document.querySelector('.display');
+        const buttons = document.querySelectorAll('.btn');
+
+        let currentInput = '';
+        let operator = '';
+        let previousInput = '';
+        let waitingForSecondOperand = false;
+
+        buttons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const value = e.target.textContent;
+
+                if (e.target.classList.contains('clear')) {
+                    currentInput = '';
+                    operator = '';
+                    previousInput = '';
+                    waitingForSecondOperand = false;
+                    display.textContent = '0';
+                    return;
+                }
+
+                if (e.target.classList.contains('operator')) {
+                    if (currentInput === '' && previousInput !== '') {
+                         // Permite trocar de operador se nada foi digitado depois
+                        operator = value;
+                        return;
+                    }
+
+                    if (waitingForSecondOperand) {
+                        operator = value;
+                        return;
+                    }
+
+                    if (previousInput !== '') {
+                        calculate();
+                    }
+
+                    operator = value;
+                    previousInput = currentInput;
+                    currentInput = '';
+                    waitingForSecondOperand = true;
+                    return;
+                }
+
+                if (e.target.classList.contains('equals')) {
+                    if (previousInput === '' || currentInput === '') {
+                        return;
+                    }
+                    calculate();
+                    waitingForSecondOperand = true;
+                    return;
+                }
+
+                if (value === '.') {
+                    if (!currentInput.includes('.')) {
+                        currentInput += value;
+                    }
+                } else {
+                    currentInput += value;
+                }
+                
+                display.textContent = currentInput;
+            });
+        });
+
+        function calculate() {
+            let result;
+            const prev = parseFloat(previousInput);
+            const curr = parseFloat(currentInput);
+
+            if (isNaN(prev) || isNaN(curr)) {
+                return;
+            }
+
+            switch (operator) {
+                case '+':
+                    result = prev + curr;
+                    break;
+                case '-':
+                    result = prev - curr;
+                    break;
+                case '*':
+                    result = prev * curr;
+                    break;
+                case '/':
+                    result = prev / curr;
+                    break;
+                default:
+                    return;
+            }
+            display.textContent = result;
+            currentInput = String(result);
+            previousInput = '';
+        }
+    </script>
+</body>
+</html>
