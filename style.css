@@ -1,29 +1,75 @@
-/* Estilos CSS para a calculadora */
+/* Estilos CSS para o layout de coração */
 body {
     font-family: 'Arial', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #fce4ec; /* Um rosa bem clarinho para o fundo */
+    background-color: #fce4ec; /* Rosa clarinho para o fundo */
     margin: 0;
 }
 
+.calculator-container {
+    position: relative;
+    width: 400px;
+    height: 380px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .calculator {
-    background-color: #f8bbd0; /* Rosa mais escuro para a calculadora */
+    position: absolute;
+    top: 60px; /* Ajusta a posição para o coração */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px; /* Largura da grade interna */
     padding: 20px;
     border-radius: 20px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    background-color: transparent; /* Fundo transparente */
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
-    width: 300px;
+}
+
+.calculator-heart {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%) rotate(-45deg);
+    width: 250px;
+    height: 250px;
+    background-color: #f8bbd0; /* Rosa mais escuro para o coração */
+    border-radius: 20px;
+    z-index: -1;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.calculator-heart::before,
+.calculator-heart::after {
+    content: '';
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    background-color: #f8bbd0;
+    border-radius: 50%;
+}
+
+.calculator-heart::before {
+    top: -125px;
+    left: 0;
+}
+
+.calculator-heart::after {
+    top: 0;
+    left: 125px;
 }
 
 .display {
     grid-column: span 4;
     background-color: #fff;
-    color: #d81b60; /* Rosa forte para o texto */
+    color: #d81b60;
     font-size: 2.5em;
     text-align: right;
     padding: 15px;
@@ -35,7 +81,7 @@ body {
 }
 
 .btn {
-    background-color: #ff80ab; /* Rosa vibrante para os botões */
+    background-color: #ff80ab;
     color: #fff;
     border: none;
     padding: 20px;
@@ -46,19 +92,27 @@ body {
 }
 
 .btn:hover {
-    background-color: #ff4081; /* Um rosa ainda mais escuro no hover */
+    background-color: #ff4081;
 }
 
 .operator {
-    background-color: #d81b60; /* Um rosa bem escuro para operadores */
+    background-color: #d81b60;
 }
 
 .operator:hover {
     background-color: #c2185b;
 }
 
+.memory {
+    background-color: #b39ddb;
+}
+
+.memory:hover {
+    background-color: #9575cd;
+}
+
 .equals {
-    background-color: #f06292; /* Rosa de igual */
+    background-color: #f06292;
     grid-column: span 2;
 }
 
@@ -67,7 +121,7 @@ body {
 }
 
 .clear {
-    background-color: #ffcd2c; /* Amarelo para o botão C */
+    background-color: #ffcd2c;
     color: #fff;
 }
 
