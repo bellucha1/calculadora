@@ -29,15 +29,6 @@ body {
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
-/* Manchas da vaca */
-.cow-face::before,
-.cow-face::after {
-    content: '';
-    position: absolute;
-    background-color: #333; /* Cor preta para as manchas */
-    border-radius: 50%;
-}
-
 .cow-face::before {
     width: 120px;
     height: 100px;
