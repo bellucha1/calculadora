@@ -3,28 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Rosa Completa</title>
+    <title>Calculadora Rosa de Coração</title>
     <style>
-        /* Estilos CSS para a calculadora */
+        /* Estilos CSS para o layout de coração */
         body {
             font-family: 'Arial', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #fce4ec;
+            background-color: #fce4ec; /* Rosa clarinho para o fundo */
             margin: 0;
         }
 
+        .calculator-container {
+            position: relative;
+            width: 400px;
+            height: 380px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
         .calculator {
-            background-color: #f8bbd0;
+            position: absolute;
+            top: 60px; /* Ajusta a posição para o coração */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px; /* Largura da grade interna */
             padding: 20px;
             border-radius: 20px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            background-color: transparent; /* Fundo transparente */
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 10px;
-            width: 350px;
+        }
+
+        .calculator-heart {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%) rotate(-45deg);
+            width: 250px;
+            height: 250px;
+            background-color: #f8bbd0; /* Rosa mais escuro para o coração */
+            border-radius: 20px;
+            z-index: -1;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .calculator-heart::before,
+        .calculator-heart::after {
+            content: '';
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            background-color: #f8bbd0;
+            border-radius: 50%;
+        }
+
+        .calculator-heart::before {
+            top: -125px;
+            left: 0;
+        }
+
+        .calculator-heart::after {
+            top: 0;
+            left: 125px;
         }
 
         .display {
@@ -93,38 +139,41 @@
 </head>
 <body>
 
-    <div class="calculator">
-        <div class="display">0</div>
-        
-        <button class="btn memory" data-op="MC">MC</button>
-        <button class="btn memory" data-op="MR">MR</button>
-        <button class="btn memory" data-op="M+">M+</button>
-        <button class="btn memory" data-op="M-">M-</button>
-        
-        <button class="btn clear">C</button>
-        <button class="btn operator" data-op="1/x">1/x</button>
-        <button class="btn operator" data-op="^">^</button>
-        <button class="btn operator" data-op="/">/</button>
-        
-        <button class="btn">7</button>
-        <button class="btn">8</button>
-        <button class="btn">9</button>
-        <button class="btn operator" data-op="*">*</button>
+    <div class="calculator-container">
+        <div class="calculator-heart"></div>
+        <div class="calculator">
+            <div class="display">0</div>
+            
+            <button class="btn memory" data-op="MC">MC</button>
+            <button class="btn memory" data-op="MR">MR</button>
+            <button class="btn memory" data-op="M+">M+</button>
+            <button class="btn memory" data-op="M-">M-</button>
+            
+            <button class="btn clear">C</button>
+            <button class="btn operator" data-op="1/x">1/x</button>
+            <button class="btn operator" data-op="^">^</button>
+            <button class="btn operator" data-op="/">/</button>
+            
+            <button class="btn">7</button>
+            <button class="btn">8</button>
+            <button class="btn">9</button>
+            <button class="btn operator" data-op="*">*</button>
 
-        <button class="btn">4</button>
-        <button class="btn">5</button>
-        <button class="btn">6</button>
-        <button class="btn operator" data-op="-">-</button>
+            <button class="btn">4</button>
+            <button class="btn">5</button>
+            <button class="btn">6</button>
+            <button class="btn operator" data-op="-">-</button>
 
-        <button class="btn">1</button>
-        <button class="btn">2</button>
-        <button class="btn">3</button>
-        <button class="btn operator" data-op="+">+</button>
-        
-        <button class="btn operator" data-op="sqrt">sqrt</button>
-        <button class="btn">0</button>
-        <button class="btn">.</button>
-        <button class="btn equals" data-op="=">=</button>
+            <button class="btn">1</button>
+            <button class="btn">2</button>
+            <button class="btn">3</button>
+            <button class="btn operator" data-op="+">+</button>
+            
+            <button class="btn operator" data-op="sqrt">sqrt</button>
+            <button class="btn">0</button>
+            <button class="btn">.</button>
+            <button class="btn equals" data-op="=">=</button>
+        </div>
     </div>
 
     <script>
@@ -135,7 +184,7 @@
         let operator = '';
         let previousInput = '';
         let waitingForSecondOperand = false;
-        let memory = 0; // Variável para a memória
+        let memory = 0;
 
         buttons.forEach(button => {
             button.addEventListener('click', (e) => {
