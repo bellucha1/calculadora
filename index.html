@@ -24,7 +24,7 @@
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 10px;
-            width: 300px;
+            width: 350px; /* Aumentei a largura para caber os botões */
         }
 
         .display {
@@ -64,6 +64,14 @@
             background-color: #c2185b;
         }
 
+        .memory {
+            background-color: #b39ddb; /* Uma cor diferente para a memória */
+        }
+
+        .memory:hover {
+            background-color: #9575cd;
+        }
+
         .equals {
             background-color: #f06292;
             grid-column: span 2;
@@ -87,26 +95,38 @@
 
     <div class="calculator">
         <div class="display">0</div>
+        
+        <button class="btn memory" data-op="MC">MC</button>
+        <button class="btn memory" data-op="MR">MR</button>
+        <button class="btn memory" data-op="M+">M+</button>
+        <button class="btn memory" data-op="M-">M-</button>
+        
         <button class="btn clear">C</button>
         <button class="btn operator" data-op="sqrt">sqrt</button>
         <button class="btn operator" data-op="/">/</button>
         <button class="btn operator" data-op="*">*</button>
+        <button class="btn operator" data-op="+/-">+/-</button>
+
         <button class="btn">7</button>
         <button class="btn">8</button>
         <button class="btn">9</button>
         <button class="btn operator" data-op="-">-</button>
+        <button class="btn operator" data-op="1/x">1/x</button>
+
         <button class="btn">4</button>
         <button class="btn">5</button>
         <button class="btn">6</button>
         <button class="btn operator" data-op="+">+</button>
+        <button class="btn operator" data-op="^">^</button>
+
         <button class="btn">1</button>
         <button class="btn">2</button>
         <button class="btn">3</button>
-        <button class="btn operator" data-op="^">^</button>
-        <button class="btn">0</button>
-        <button class="btn">.</button>
         <button class="btn operator" data-op="%">%</button>
         <button class="btn equals">=</button>
+        
+        <button class="btn">0</button>
+        <button class="btn" style="grid-column: span 2;">.</button>
     </div>
 
     <script>
@@ -117,6 +137,7 @@
         let operator = '';
         let previousInput = '';
         let waitingForSecondOperand = false;
+        let memory = 0; // Nova variável para a memória
 
         buttons.forEach(button => {
             button.addEventListener('click', (e) => {
@@ -133,57 +154,80 @@
                 }
 
                 if (op) {
-                    // Lógica para operadores
-                    if (op === 'sqrt') {
-                        if (currentInput !== '') {
-                            let result = Math.sqrt(parseFloat(currentInput));
-                            display.textContent = result;
-                            currentInput = String(result);
-                        }
-                        return;
-                    }
-                    if (op === '%') {
-                        if (currentInput !== '') {
-                            let curr = parseFloat(currentInput);
-                            let prev = parseFloat(previousInput);
-
-                            if (operator && previousInput !== '') {
-                                let result;
-                                if (operator === '+') {
-                                    result = prev + (prev * (curr / 100));
-                                } else if (operator === '-') {
-                                    result = prev - (prev * (curr / 100));
-                                } else if (operator === '*') {
-                                    result = prev * (curr / 100);
-                                } else if (operator === '/') {
-                                    result = prev / (curr / 100);
-                                }
+                    // Lógica para operadores especiais
+                    switch (op) {
+                        case 'sqrt':
+                            if (currentInput !== '') {
+                                let result = Math.sqrt(parseFloat(currentInput));
                                 display.textContent = result;
                                 currentInput = String(result);
-                                previousInput = '';
-                                operator = '';
-                            } else {
-                                display.textContent = curr / 100;
-                                currentInput = String(curr / 100);
                             }
-                        }
-                        return;
+                            return;
+                        case '%':
+                            if (currentInput !== '') {
+                                let curr = parseFloat(currentInput);
+                                let prev = parseFloat(previousInput);
+                                if (operator && previousInput !== '') {
+                                    let result;
+                                    if (operator === '+') { result = prev + (prev * (curr / 100)); }
+                                    else if (operator === '-') { result = prev - (prev * (curr / 100)); }
+                                    else if (operator === '*') { result = prev * (curr / 100); }
+                                    else if (operator === '/') { result = prev / (curr / 100); }
+                                    display.textContent = result;
+                                    currentInput = String(result);
+                                    previousInput = '';
+                                    operator = '';
+                                } else {
+                                    display.textContent = curr / 100;
+                                    currentInput = String(curr / 100);
+                                }
+                            }
+                            return;
+                        case '+/-':
+                            if (currentInput !== '') {
+                                let num = parseFloat(currentInput) * -1;
+                                display.textContent = num;
+                                currentInput = String(num);
+                            }
+                            return;
+                        case '1/x':
+                            if (currentInput !== '' && parseFloat(currentInput) !== 0) {
+                                let num = 1 / parseFloat(currentInput);
+                                display.textContent = num;
+                                currentInput = String(num);
+                            }
+                            return;
+                        case 'MC':
+                            memory = 0;
+                            return;
+                        case 'MR':
+                            currentInput = String(memory);
+                            display.textContent = currentInput;
+                            return;
+                        case 'M+':
+                            if (currentInput !== '') {
+                                memory += parseFloat(currentInput);
+                            }
+                            return;
+                        case 'M-':
+                            if (currentInput !== '') {
+                                memory -= parseFloat(currentInput);
+                            }
+                            return;
                     }
 
+                    // Lógica para operadores binários (+, -, *, /, ^)
                     if (currentInput === '' && previousInput !== '') {
                         operator = op;
                         return;
                     }
-
                     if (waitingForSecondOperand) {
                         operator = op;
                         return;
                     }
-
                     if (previousInput !== '') {
                         calculate();
                     }
-
                     operator = op;
                     previousInput = currentInput;
                     currentInput = '';
@@ -222,11 +266,17 @@
             }
 
             switch (operator) {
-                case '+':
-                    result = prev + curr;
-                    break;
-                case '-':
-                    result = prev - curr;
-                    break;
-                case '*':
-                    result = prev * curr;
+                case '+': result = prev + curr; break;
+                case '-': result = prev - curr; break;
+                case '*': result = prev * curr; break;
+                case '/': result = prev / curr; break;
+                case '^': result = Math.pow(prev, curr); break;
+                default: return;
+            }
+            display.textContent = result;
+            currentInput = String(result);
+            previousInput = '';
+        }
+    </script>
+</body>
+</html>
