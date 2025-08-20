@@ -1,1 +1,76 @@
+/* Estilos CSS para a calculadora */
+body {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #fce4ec; /* Um rosa bem clarinho para o fundo */
+    margin: 0;
+}
 
+.calculator {
+    background-color: #f8bbd0; /* Rosa mais escuro para a calculadora */
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    width: 300px;
+}
+
+.display {
+    grid-column: span 4;
+    background-color: #fff;
+    color: #d81b60; /* Rosa forte para o texto */
+    font-size: 2.5em;
+    text-align: right;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.btn {
+    background-color: #ff80ab; /* Rosa vibrante para os botões */
+    color: #fff;
+    border: none;
+    padding: 20px;
+    font-size: 1.5em;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn:hover {
+    background-color: #ff4081; /* Um rosa ainda mais escuro no hover */
+}
+
+.operator {
+    background-color: #d81b60; /* Um rosa bem escuro para operadores */
+}
+
+.operator:hover {
+    background-color: #c2185b;
+}
+
+.equals {
+    background-color: #f06292; /* Rosa de igual */
+    grid-column: span 2;
+}
+
+.equals:hover {
+    background-color: #e91e63;
+}
+
+.clear {
+    background-color: #ffcd2c; /* Amarelo para o botão C */
+    color: #fff;
+}
+
+.clear:hover {
+    background-color: #fbc02d;
+}
