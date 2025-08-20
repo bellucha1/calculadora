@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Rosa</title>
+    <title>Calculadora Rosa (Avançada)</title>
     <style>
         /* Estilos CSS para a calculadora */
         body {
@@ -12,12 +12,12 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #fce4ec; /* Um rosa bem clarinho para o fundo */
+            background-color: #fce4ec;
             margin: 0;
         }
 
         .calculator {
-            background-color: #f8bbd0; /* Rosa mais escuro para a calculadora */
+            background-color: #f8bbd0;
             padding: 20px;
             border-radius: 20px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
@@ -30,7 +30,7 @@
         .display {
             grid-column: span 4;
             background-color: #fff;
-            color: #d81b60; /* Rosa forte para o texto */
+            color: #d81b60;
             font-size: 2.5em;
             text-align: right;
             padding: 15px;
@@ -42,7 +42,7 @@
         }
 
         .btn {
-            background-color: #ff80ab; /* Rosa vibrante para os botões */
+            background-color: #ff80ab;
             color: #fff;
             border: none;
             padding: 20px;
@@ -53,11 +53,11 @@
         }
 
         .btn:hover {
-            background-color: #ff4081; /* Um rosa ainda mais escuro no hover */
+            background-color: #ff4081;
         }
 
         .operator {
-            background-color: #d81b60; /* Um rosa bem escuro para operadores */
+            background-color: #d81b60;
         }
 
         .operator:hover {
@@ -65,7 +65,7 @@
         }
 
         .equals {
-            background-color: #f06292; /* Rosa de igual */
+            background-color: #f06292;
             grid-column: span 2;
         }
 
@@ -74,7 +74,7 @@
         }
 
         .clear {
-            background-color: #ffcd2c; /* Amarelo para o botão C */
+            background-color: #ffcd2c;
             color: #fff;
         }
 
@@ -88,26 +88,28 @@
     <div class="calculator">
         <div class="display">0</div>
         <button class="btn clear">C</button>
-        <button class="btn operator">/</button>
-        <button class="btn operator">*</button>
-        <button class="btn operator">-</button>
+        <button class="btn operator" data-op="sqrt">sqrt</button>
+        <button class="btn operator" data-op="/">/</button>
+        <button class="btn operator" data-op="*">*</button>
         <button class="btn">7</button>
         <button class="btn">8</button>
         <button class="btn">9</button>
-        <button class="btn operator">+</button>
+        <button class="btn operator" data-op="-">-</button>
         <button class="btn">4</button>
         <button class="btn">5</button>
         <button class="btn">6</button>
+        <button class="btn operator" data-op="+">+</button>
         <button class="btn">1</button>
         <button class="btn">2</button>
         <button class="btn">3</button>
-        <button class="btn equals">=</button>
+        <button class="btn operator" data-op="^">^</button>
         <button class="btn">0</button>
         <button class="btn">.</button>
+        <button class="btn operator" data-op="%">%</button>
+        <button class="btn equals">=</button>
     </div>
 
     <script>
-        // Código JavaScript para a funcionalidade
         const display = document.querySelector('.display');
         const buttons = document.querySelectorAll('.btn');
 
@@ -119,6 +121,7 @@
         buttons.forEach(button => {
             button.addEventListener('click', (e) => {
                 const value = e.target.textContent;
+                const op = e.target.dataset.op;
 
                 if (e.target.classList.contains('clear')) {
                     currentInput = '';
@@ -129,15 +132,51 @@
                     return;
                 }
 
-                if (e.target.classList.contains('operator')) {
+                if (op) {
+                    // Lógica para operadores
+                    if (op === 'sqrt') {
+                        if (currentInput !== '') {
+                            let result = Math.sqrt(parseFloat(currentInput));
+                            display.textContent = result;
+                            currentInput = String(result);
+                        }
+                        return;
+                    }
+                    if (op === '%') {
+                        if (currentInput !== '') {
+                            let curr = parseFloat(currentInput);
+                            let prev = parseFloat(previousInput);
+
+                            if (operator && previousInput !== '') {
+                                let result;
+                                if (operator === '+') {
+                                    result = prev + (prev * (curr / 100));
+                                } else if (operator === '-') {
+                                    result = prev - (prev * (curr / 100));
+                                } else if (operator === '*') {
+                                    result = prev * (curr / 100);
+                                } else if (operator === '/') {
+                                    result = prev / (curr / 100);
+                                }
+                                display.textContent = result;
+                                currentInput = String(result);
+                                previousInput = '';
+                                operator = '';
+                            } else {
+                                display.textContent = curr / 100;
+                                currentInput = String(curr / 100);
+                            }
+                        }
+                        return;
+                    }
+
                     if (currentInput === '' && previousInput !== '') {
-                         // Permite trocar de operador se nada foi digitado depois
-                        operator = value;
+                        operator = op;
                         return;
                     }
 
                     if (waitingForSecondOperand) {
-                        operator = value;
+                        operator = op;
                         return;
                     }
 
@@ -145,7 +184,7 @@
                         calculate();
                     }
 
-                    operator = value;
+                    operator = op;
                     previousInput = currentInput;
                     currentInput = '';
                     waitingForSecondOperand = true;
@@ -191,17 +230,3 @@
                     break;
                 case '*':
                     result = prev * curr;
-                    break;
-                case '/':
-                    result = prev / curr;
-                    break;
-                default:
-                    return;
-            }
-            display.textContent = result;
-            currentInput = String(result);
-            previousInput = '';
-        }
-    </script>
-</body>
-</html>
